@@ -1,0 +1,77 @@
+<!doctype html>
+<h1>Test Web Socket connection</h1>
+<div id="connectMessages"><div>
+<button id="sendButton">Send Message</button>
+<button id="readTemperature">Read Temperature</button>
+<button id="readHumidity">Read Humidity</button>
+<button id="ledOn">LED ON</button>
+<button id="ledOff">LED OFF</button>
+<div id="messages"><div>
+<script>
+
+	let url = "ws://localhost:8080";
+	showConnectMessage('Intentando conectar a ' + url + '...');
+	let socket = new WebSocket(url);
+
+	// Handler de Mensajes entrantes
+	socket.onmessage = function(event){
+		let incomingMessage = event.data;
+		showMessage(incomingMessage);
+	}
+
+	// Abrir el WebSocket y manejar la conexión
+	socket.onopen = function(event) {
+		console.log('WebSocket is open now.');
+	};
+
+	// Manejar errores
+	socket.onerror = function(event) {
+		console.error('WebSocket error observed:', event);
+	};
+
+	socket.onclose = event => console.log('Closed ${event.code}');
+
+	//Show message in div#messages
+	function showMessage(message) {
+		let messageElem = document.createElement('div');
+		messageElem.textContent = message;
+		document.getElementById('messages').prepend(messageElem);
+	}
+
+	//Show message in div#connectMessages
+	function showConnectMessage(message) {
+		let messageElem = document.createElement('div');
+		messageElem.textContent = message;
+		document.getElementById('connectMessages').prepend(messageElem);
+	}
+
+
+	document.getElementById('sendButton').addEventListener('click', function() {
+		send('Hello from connected client!!!!');
+	});
+	
+	document.getElementById('readTemperature').addEventListener('click', function() {
+		send('READ TEMP');			
+	});
+	
+	document.getElementById('readHumidity').addEventListener('click', function() {
+		send('READ HUM');
+	});
+	
+	document.getElementById('ledOn').addEventListener('click', function() {
+		send('LED ON');			
+	});
+	
+	document.getElementById('ledOff').addEventListener('click', function() {
+		send('LED OFF');
+	});
+	
+	function send(message){
+		if (socket.readyState === WebSocket.OPEN) {
+			socket.send(message);
+			console.log('Message sent: ', message);
+		} else {
+			console.log('Websocket is not OPEN');
+		}
+	}
+</script>
