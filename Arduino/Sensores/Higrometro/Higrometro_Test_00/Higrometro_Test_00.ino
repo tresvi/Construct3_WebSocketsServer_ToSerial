@@ -15,5 +15,3 @@ Serial.print(valor);
 Serial.println("%");
 delay(100);
 }
-
-
