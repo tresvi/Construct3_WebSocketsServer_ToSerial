@@ -8,6 +8,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW); // Turn on the LED
   Serial.begin(9600); // Start serial communication at 9600 baud rate
+  randomSeed(analogRead(0));
 }
 
 void loop() {
@@ -41,16 +42,28 @@ void loop() {
       SendTemperature();
     } else if (command == "READ HUM") {
       SendHumidity();
+    } else if (command == "READ LIGHT") {
+      SendLight();
     }
   }
 }
 
 int SendTemperature()
 {
-  Serial.println("24ºC");
+  Serial.print(random(0, 40));
+  Serial.println("ºC");
+  //Serial.println("24ºC");
 }
 
 int SendHumidity()
 {
-  Serial.println("55%");
+  Serial.print(random(0, 100));
+  Serial.println("%");
+  //Serial.println("55%");
+}
+
+int SendLight()
+{
+  Serial.print(random(0, 1023));
+  Serial.println("L");
 }
