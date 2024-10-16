@@ -14,7 +14,8 @@ void setup(){
 void loop(){
   // higrometro loop
   int valor = analogRead(sensor);
-  //se hace un mapeo de la lectura del sensor a porcentual
+  /* int valor = map(analogRead(sensor), 0, 1023, 100, 0);
+  -- usada antes para hacr un mapeo de la lectura del sensor a porcentua */
   Serial.print(valor);
   Serial.println("%");
   delay(100);
